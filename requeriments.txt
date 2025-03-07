@@ -1,0 +1,33 @@
+1	Mostrar menu principal: 1.  Administrador, 2. Ventas, 3. Salir	-- DONE
+
+2	Acceso al menu del administrador con autenticación: usuario y contraseña de administrador
+					
+3	Mostrar inventario ordenado: por id (númerico ascendente), por producto (alfabético ascendente)					
+4	Indicación de productos con nivel de reorden  (al momento de mostrar inventario)					
+5	Alta de productos (no alta de productos duplicados por nombre,  pc<pv, existencias > nr)*					
+6	Consultas (validación productos inexistentes). Debe mostrar todos los campos del registro.* 					
+7	Modificaciones (validación productos inexistentes)*					
+8	Bajas (validación productos inexistentes) Daré de baja un producto al menos *					
+9	Mostrar solo productos existentes (los dados de baja no los debe mostrar)					
+10	Alta de productos ya eliminados (solo cambiar el estatus a 1)					
+11	Consulta de productos existentes  (los dados de baja no se deben poder consultar)					
+12	Modificaciones solo de productos existentes  (los dados de baja no se deben poder modificar)					
+13	Administración de usuarios (Menu: Altas, Bajas, Modificaciones, Consultas, Mostrar)					
+14	Bajas de productos existentes (los dados de baja no se deben poder dar de baja)					
+15	Acceso a ventas con autenticación (vendedor 1): usuario y contraseña					
+16	Venta por cliente (No se pueden vender productos dados de baja)					
+17	Actualización de inventario. El inventario se debe actualizar en automático al momento de realizar las ventas.					
+18	Validación de existencias: Si las existencias son menores a la cantidad a comprar el sistema debe validarlo y mostrar el mensaje correspondiente. Ejemplo. Si la cantidad a comprar es 6 y las existencias son 4: "No hay 6, solo hay 4, ¿realizar la venta de 4?". Hacer el descuento en el inventario si es que procede.					
+19	Importe total (ticket) por cliente					
+20	Corte de caja del vendedor					
+21	 Acceso a ventas con autenticación (vendedor 2)					
+22	Venta por cliente					
+23	Actualización de inventario					
+24	Validación de existencias					
+25	Importe total (ticket) por cliente					
+26	Corte de caja del vendedor					
+27	Actulizacion de archivos					
+28	Corte de caja general					
+29	Utliza arreglo de estructuras (al  menos 3 funcionalidades)					
+30	Al  menos 3 funcionalidades utilizando listas de estructuras					
+31	Utilidad (diferencia entre ingresos y egresos). Mostrarlo en el corte de caja general. Opcional					
