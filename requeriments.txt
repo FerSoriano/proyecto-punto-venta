@@ -1,9 +1,13 @@
+** DONE **
 1	Mostrar menu principal: 1.  Administrador, 2. Ventas, 3. Salir	-- DONE
-
-2	Acceso al menu del administrador con autenticación: usuario y contraseña de administrador
-					
+2	Acceso al menu del administrador con autenticación: usuario y contraseña de administrador -- DONE
 3	Mostrar inventario ordenado: por id (númerico ascendente), por producto (alfabético ascendente)					
 4	Indicación de productos con nivel de reorden  (al momento de mostrar inventario)					
+
+** WIP **
+
+
+** ON HOLD **
 5	Alta de productos (no alta de productos duplicados por nombre,  pc<pv, existencias > nr)*					
 6	Consultas (validación productos inexistentes). Debe mostrar todos los campos del registro.* 					
 7	Modificaciones (validación productos inexistentes)*					
