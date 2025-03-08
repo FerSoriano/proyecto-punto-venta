@@ -5,10 +5,10 @@
 4	Indicación de productos con nivel de reorden  (al momento de mostrar inventario)					
 
 ** WIP **
+5	Alta de productos (no alta de productos duplicados por nombre,  pc<pv, existencias > nr)*					
 
 
 ** ON HOLD **
-5	Alta de productos (no alta de productos duplicados por nombre,  pc<pv, existencias > nr)*					
 6	Consultas (validación productos inexistentes). Debe mostrar todos los campos del registro.* 					
 7	Modificaciones (validación productos inexistentes)*					
 8	Bajas (validación productos inexistentes) Daré de baja un producto al menos *					
@@ -35,3 +35,9 @@
 29	Utliza arreglo de estructuras (al  menos 3 funcionalidades)					
 30	Al  menos 3 funcionalidades utilizando listas de estructuras					
 31	Utilidad (diferencia entre ingresos y egresos). Mostrarlo en el corte de caja general. Opcional					
+
+----
+* Para salir de la opción será a través de "*".
+Las consultas, modificaciones y bajas deben ser por el nombre del producto.
+Se debe utilizar la función Buscar() para verificar la existencia del producto.
+----

@@ -12,6 +12,8 @@ bool validarLogin(int tipoUsuario);
 void validarInput();
 void mostrarInventario();
 void mostrarProductos(int tipoOrden);
+void altaProducto();
+bool buscarProducto(string producto);
 
 // #TODO : Crear funciones:
 int mostrarMenuAdminCuentasUsuario();
@@ -121,7 +123,8 @@ void menuAdmin(){
                 {
                 case 1:
                     limpiarConsola();
-                    cout << "Insertar codigo: Altas"<<endl;
+                    // #TODO: WIP
+                    altaProducto();
                     break;
                 case 2:
                     limpiarConsola();
@@ -136,6 +139,7 @@ void menuAdmin(){
                     cout << "Insertar codigo: Modificaciones"<<endl;
                     break;
                 case 5:
+                    limpiarConsola();
                     mostrarInventario();
                     break;
                 case 6:
@@ -144,7 +148,7 @@ void menuAdmin(){
                     break;
                 case 7:
                     limpiarConsola();
-                    cout << "Insertar codigo: Altas"<<endl;
+                    cout << "Insertar codigo: Corte de Caja General"<<endl;
                     break;
                 case 8:
                     limpiarConsola();
@@ -192,7 +196,6 @@ void validarInput(){
 }
 
 void mostrarInventario(){
-    limpiarConsola();
     int option;
     bool ejecutarMenu = true;
     
@@ -228,13 +231,8 @@ void mostrarInventario(){
     }
 }
 
-bool compararPorId(const Producto &a, const Producto &b) {
-    return a.id < b.id;
-}
-
-bool compararPorNombre(const Producto &a, const Producto &b) {
-    return a.producto < b.producto;
-}
+bool compararPorId(const Producto &a, const Producto &b) {return a.id < b.id;}
+bool compararPorNombre(const Producto &a, const Producto &b) {return a.producto < b.producto;}
 
 void mostrarProductos(int tipoOrden){
     char resurtir;
@@ -264,4 +262,48 @@ void mostrarProductos(int tipoOrden){
                             << resurtir << endl;
             }
         }
+}
+
+void altaProducto(){
+    string producto;
+    float pc, pv;
+    int existencia, nivelReorden;
+
+    cout << "\n\n\tALTA DE PRODUCTO\n\n";
+    while(true){
+        // #TODO: Validar cuando el usuario ingresa un dato de tipo incorrecto.
+        cout << "Producto: "; cin >> producto;
+        if (producto == "*"){limpiarConsola(); break;}
+        if(buscarProducto(producto)){cout << "\n\n*** El producto ya existe. Intenta de nuevo. ***\n\n"; continue;}
+
+        cout << "Precio compra: "; cin >> pc; validarInput();
+        cout << "Precio venta: "; cin >> pv; validarInput();
+        if(pc>pv) {cout << "\n\n*** El PC no puede ser mayor al PV. Intenta de nuevo. ***\n\n"; continue;}
+
+        cout << "Existencia: "; cin >> existencia; validarInput();
+        cout << "Nivel de Reorden: "; cin >> nivelReorden; validarInput();
+        if(existencia<nivelReorden){cout << "\n\n*** La Existencia no puede ser menor que el Nivel de Reorden. Intenta de nuevo ***\n\n"; continue;}
+
+        // se agrega el producto.
+        productos[totalProductos].id = ++totalProductos;
+        productos[totalProductos].producto = producto;
+        productos[totalProductos].pc = pc; // #TODO: Validar porque no se agregan en formato decimal
+        productos[totalProductos].pv = pv; // #TODO: Validar porque no se agregan en formato decimal
+        productos[totalProductos].existencias = existencia;
+        productos[totalProductos].nivelReorden = nivelReorden;
+        productos[totalProductos].status = 1;
+
+        cout << "\n\nEl producto "<<producto<<" se agrego correctamente.\n";
+        cout << "Ingresa otro producto: \n\n";
+    }
+
+}
+
+bool buscarProducto(string producto){
+    //#TODO: convertir producto a lowercase
+    bool existe = false;
+    for (int i = 0; i < totalProductos; i++){
+        if(productos[i].producto == producto) {existe = true; break;}
+    }
+    return existe;
 }
