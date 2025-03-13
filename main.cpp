@@ -50,7 +50,11 @@ struct Producto{
 
 // variables globales
 int totalUsuarios = 3;
-Usuario usuarios[100] = {{"admin", "123", 1, 1}, {"vend1", "123", 2, 1}, {"vend2", "123", 2, 1}};
+Usuario usuarios[100] = {
+    {"admin", "123", 1, 1}, 
+    {"vend1", "123", 2, 1}, 
+    {"vend2", "123", 2, 1}
+};
 
 int totalProductos = 5;
 Producto productos[100] = {
@@ -124,7 +128,6 @@ void menuAdmin(){
                 {
                 case 1:
                     limpiarConsola();
-                    // #TODO: WIP Alta producto
                     altaProducto();
                     break;
                 case 2:
@@ -233,9 +236,13 @@ void mostrarInventario(){
 }
 
 bool compararPorId(const Producto &a, const Producto &b) {return a.id < b.id;}
-bool compararPorNombre(const Producto &a, const Producto &b) {return a.producto < b.producto;}
+bool compararPorNombre(const Producto &a, const Producto &b) {
+    // se convierten a minusculas para poderlos ordenar correctamente.
+    string producto_a = convertirMinus(a.producto);
+    string producto_b = convertirMinus(b.producto);
+    return producto_a < producto_b;
+}
 
-// #TODO: Agregar logica para que ordene independientemente si es mayuscula o minuscula.
 void mostrarProductos(int tipoOrden){
     char resurtir;
     if 
@@ -273,7 +280,7 @@ void altaProducto(){
 
     cout << "\n\n\tALTA DE PRODUCTO\n\n";
     while(true){
-        cout << "Producto: "; cin >> producto; //#TODO: convertir en automatico la primer letra a UpperCase?
+        cout << "Producto: "; cin >> producto;
         if (producto == "*"){limpiarConsola(); break;}
         if(buscarProducto(producto)){cout << "\n\n*** El producto ya existe. Intenta de nuevo. ***\n\n"; continue;}
         
@@ -304,14 +311,12 @@ void altaProducto(){
 bool buscarProducto(string producto){
     bool existe = false;
     for (int i = 0; i < totalProductos; i++){
-        if(convertirMinus(productos[i].producto) == convertirMinus(producto)) {existe = true; break;}
+        if(convertirMinus(productos[i].producto) == convertirMinus(producto)) existe = true; break;
     }
     return existe;
 }
 
 string convertirMinus(string str){
-    for (char &c : str){
-       c = tolower(c);
-    }
+    for (char &c : str) c = tolower(c);
     return str;
 }
