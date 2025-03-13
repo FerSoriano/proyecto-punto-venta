@@ -15,6 +15,7 @@ void mostrarProductos(int tipoOrden);
 void altaProducto();
 bool buscarProducto(string producto);
 string convertirMinus(string str);
+void consultarProducto();
 
 // #TODO : Crear funciones:
 int mostrarMenuAdminCuentasUsuario();
@@ -136,7 +137,7 @@ void menuAdmin(){
                     break;
                 case 3:
                     limpiarConsola();
-                    cout << "Insertar codigo: Consultas"<<endl;
+                    consultarProducto();
                     break;
                 case 4:
                     limpiarConsola();
@@ -319,4 +320,35 @@ bool buscarProducto(string producto){
 string convertirMinus(string str){
     for (char &c : str) c = tolower(c);
     return str;
+}
+
+void consultarProducto(){
+    string producto;
+    bool ejecutar = true;
+    while (ejecutar){
+        bool productoEncontrado = false;
+        cout << "\n\n\tCONSULTA\n\nProducto: "; cin >> producto;
+        if (producto == "*"){limpiarConsola(); break;}
+        for(int i = 0; i < totalProductos; i++){
+            if (convertirMinus(producto) == convertirMinus(productos[i].producto) && productos[i].status == 1){
+                cout << "\n" << left << setw(5) << "Id"
+                        << setw(15) << "Producto"
+                        << setw(10) << "PC"
+                        << setw(10) << "PV"
+                        << setw(15) << "Existencias"
+                        << setw(20) << "Nivel de Reorden"
+                        << "St" << endl;
+                cout << left << setw(5) << productos[i].id
+                        << setw(15) << productos[i].producto
+                        << setw(10) << productos[i].pc
+                        << setw(10) << productos[i].pv
+                        << setw(15) << productos[i].existencias
+                        << setw(20) << productos[i].nivelReorden
+                        << productos[i].status << endl;
+                productoEncontrado = true;
+                break;
+            }
+        }
+        if(!productoEncontrado) cout << "\n\n*** No se encontro el producto \"" << producto << "\" ***\n\n";
+    }
 }
