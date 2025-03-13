@@ -14,6 +14,7 @@ void mostrarInventario();
 void mostrarProductos(int tipoOrden);
 void altaProducto();
 bool buscarProducto(string producto);
+string convertirMinus(string str);
 
 // #TODO : Crear funciones:
 int mostrarMenuAdminCuentasUsuario();
@@ -71,7 +72,7 @@ int main(){
                 menuAdmin();
                 break;
             case 2:
-                // #TODO: Validacion login
+                // #TODO: Validacion login ventas
                 // #TODO: Crear funcion Ventas()
                 limpiarConsola();
                 cout << "Mostrando menu Ventas...";
@@ -123,7 +124,7 @@ void menuAdmin(){
                 {
                 case 1:
                     limpiarConsola();
-                    // #TODO: WIP
+                    // #TODO: WIP Alta producto
                     altaProducto();
                     break;
                 case 2:
@@ -234,6 +235,7 @@ void mostrarInventario(){
 bool compararPorId(const Producto &a, const Producto &b) {return a.id < b.id;}
 bool compararPorNombre(const Producto &a, const Producto &b) {return a.producto < b.producto;}
 
+// #TODO: Agregar logica para que ordene independientemente si es mayuscula o minuscula.
 void mostrarProductos(int tipoOrden){
     char resurtir;
     if 
@@ -271,11 +273,10 @@ void altaProducto(){
 
     cout << "\n\n\tALTA DE PRODUCTO\n\n";
     while(true){
-        // #TODO: Validar cuando el usuario ingresa un dato de tipo incorrecto.
-        cout << "Producto: "; cin >> producto;
+        cout << "Producto: "; cin >> producto; //#TODO: convertir en automatico la primer letra a UpperCase?
         if (producto == "*"){limpiarConsola(); break;}
         if(buscarProducto(producto)){cout << "\n\n*** El producto ya existe. Intenta de nuevo. ***\n\n"; continue;}
-
+        
         cout << "Precio compra: "; cin >> pc; validarInput();
         cout << "Precio venta: "; cin >> pv; validarInput();
         if(pc>pv) {cout << "\n\n*** El PC no puede ser mayor al PV. Intenta de nuevo. ***\n\n"; continue;}
@@ -285,14 +286,15 @@ void altaProducto(){
         if(existencia<nivelReorden){cout << "\n\n*** La Existencia no puede ser menor que el Nivel de Reorden. Intenta de nuevo ***\n\n"; continue;}
 
         // se agrega el producto.
-        productos[totalProductos].id = ++totalProductos;
+        productos[totalProductos].id = totalProductos + 1;
         productos[totalProductos].producto = producto;
-        productos[totalProductos].pc = pc; // #TODO: Validar porque no se agregan en formato decimal
-        productos[totalProductos].pv = pv; // #TODO: Validar porque no se agregan en formato decimal
+        productos[totalProductos].pc = pc;
+        productos[totalProductos].pv = pv;
         productos[totalProductos].existencias = existencia;
         productos[totalProductos].nivelReorden = nivelReorden;
         productos[totalProductos].status = 1;
 
+        totalProductos++; // se incrementa en 1 la cantidad de productos.
         cout << "\n\nEl producto "<<producto<<" se agrego correctamente.\n";
         cout << "Ingresa otro producto: \n\n";
     }
@@ -300,10 +302,16 @@ void altaProducto(){
 }
 
 bool buscarProducto(string producto){
-    //#TODO: convertir producto a lowercase
     bool existe = false;
     for (int i = 0; i < totalProductos; i++){
-        if(productos[i].producto == producto) {existe = true; break;}
+        if(convertirMinus(productos[i].producto) == convertirMinus(producto)) {existe = true; break;}
     }
     return existe;
+}
+
+string convertirMinus(string str){
+    for (char &c : str){
+       c = tolower(c);
+    }
+    return str;
 }
