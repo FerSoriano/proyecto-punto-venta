@@ -34,6 +34,7 @@ Producto buscarProducto(string nombreProducto);
 string convertirMinus(string str);
 void consultarProducto();
 void modificarProducto();
+void bajaProducto();
 
 // #TODO : Crear funciones:
 int mostrarMenuAdminCuentasUsuario();
@@ -133,7 +134,7 @@ void menuAdmin(){
                     break;
                 case 2:
                     limpiarConsola();
-                    cout << "Insertar codigo: Bajas"<<endl;
+                    bajaProducto();
                     break;
                 case 3:
                     limpiarConsola();
@@ -414,5 +415,24 @@ void modificarProducto(){
                     }
                 }
         } else { limpiarConsola(); cout << "\n\n*** No se encontro el producto \"" << nombreProducto << "\" ***\n\n"; }
+    }
+}
+
+void bajaProducto(){
+    Producto producto;
+    string nombreProducto;
+
+    sort(productos,productos + totalProductos,compararPorId); // ordenamos la lista para poderla modificar.
+
+    while(true){
+        cout << "\n\n\tBAJA DE PRODUCTO\n\n";
+        cout << "Producto: "; cin >> nombreProducto;
+        if (nombreProducto == "*"){limpiarConsola(); break;}
+
+        producto = buscarProducto(nombreProducto);
+        if(producto.status == 0){cout << "\n\n***Prodcuto \"" << nombreProducto << "\" no encontrado. Intenta de nuevo. ***\n\n"; continue;}
+
+        productos[producto.id - 1].status = 0;
+        cout << "El producto \"" << producto.producto << "\" se dio de baja\n";
     }
 }
