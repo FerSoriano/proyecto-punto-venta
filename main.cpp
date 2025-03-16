@@ -293,15 +293,25 @@ void altaProducto(){
         if(existencia<nivelReorden){cout << "\n\n*** La Existencia no puede ser menor que el Nivel de Reorden. Intenta de nuevo ***\n\n"; continue;}
 
         // se agrega el producto.
-        productos[totalProductos].id = totalProductos + 1; //TODO: si producto.id > 0 ? id : totalProductos + 1;
-        productos[totalProductos].producto = nombreProducto; //TODO: si producto.id > 0 ? producto.producto : nombreProductol;
-        productos[totalProductos].pc = pc;
-        productos[totalProductos].pv = pv;
-        productos[totalProductos].existencias = existencia;
-        productos[totalProductos].nivelReorden = nivelReorden;
-        productos[totalProductos].status = 1;
+        if( producto.id == 0){
+            productos[totalProductos].id = totalProductos + 1;
+            productos[totalProductos].producto = nombreProducto;
+            productos[totalProductos].pc = pc;
+            productos[totalProductos].pv = pv;
+            productos[totalProductos].existencias = existencia;
+            productos[totalProductos].nivelReorden = nivelReorden;
+            productos[totalProductos].status = 1;
+            totalProductos++; // se incrementa en 1 la cantidad de productos.
+        } else { 
+            // si ya existia se modifica el registro original
+            sort(productos,productos + totalProductos,compararPorId); // ordenamos la lista para poderla modificar.
+            productos[producto.id - 1].pc = pc;
+            productos[producto.id - 1].pv = pv;
+            productos[producto.id - 1].existencias = existencia;
+            productos[producto.id - 1].nivelReorden = nivelReorden;
+            productos[producto.id - 1].status = 1;
+        }
 
-        totalProductos++; // se incrementa en 1 la cantidad de productos.
         cout << "\n\nEl producto \"" << nombreProducto << "\" se agrego correctamente.\n\n";
 
     }
