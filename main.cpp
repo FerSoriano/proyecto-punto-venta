@@ -33,6 +33,7 @@ void altaProducto();
 Producto buscarProducto(string nombreProducto);
 string convertirMinus(string str);
 void consultarProducto();
+void modificarProducto();
 
 // #TODO : Crear funciones:
 int mostrarMenuAdminCuentasUsuario();
@@ -119,7 +120,7 @@ void menuAdmin(){
         
         while(ejecutarMenu){
             cout << "\n\n\tMENU ADMINISTRADOR\n\n";
-            cout << "1. Altas\n2. Bajas\n3. Consultas\n4. Modificaciones\n5. Mostrar Inventario\n6. Administracion de Cuentas de Usuario\n7.Corte de caja general\n8.Regresar al menu anterior.\n\n";
+            cout << "1. Altas\n2. Bajas\n3. Consultas\n4. Modificaciones\n5. Mostrar Inventario\n6. Administracion de Cuentas de Usuario\n7. Corte de caja general\n8. Regresar al menu anterior.\n\n";
             cout << "\tOpcion: ";
             cin >> option;
             validarInput();
@@ -140,7 +141,7 @@ void menuAdmin(){
                     break;
                 case 4:
                     limpiarConsola();
-                    cout << "Insertar codigo: Modificaciones"<<endl;
+                    modificarProducto();
                     break;
                 case 5:
                     limpiarConsola();
@@ -344,5 +345,74 @@ void consultarProducto(){
             continue;
         }
         cout << "\n\n*** No se encontro el producto \"" << nombreProducto << "\" ***\n\n";
+    }
+}
+
+void modificarProducto(){
+    Producto producto;
+    string nombreProducto;
+    float pc, pv;
+    int existencia, nivelReorden, opcion;
+
+    sort(productos,productos + totalProductos,compararPorId); // ordenamos la lista para poderla modificar.
+    
+    while (true){
+        bool mostrarOpciones = true;
+        cout << "\n\n\tMODIFICACIONES\n\nProducto: "; cin >> nombreProducto;
+        if (nombreProducto == "*"){limpiarConsola(); break;}
+        producto = buscarProducto(nombreProducto);
+        if(producto.status == 1){
+            while (mostrarOpciones){
+                    cout << "\n\n\tMODIFICACIONES\n\nProducto: "<< producto.producto << endl;
+                    cout << "\n1. Precio de compra\n2. Precio de venta\n3. Existencias\n4. Nidel de reorden\n5. Regresar al menu anterior\n\n";
+                    cout << "\tOpcion: "; cin >> opcion;
+                    validarInput();
+                    switch(opcion){
+                        // TODO: Se deben de hacer las mismas validaciones que en las Altas?
+                        case 1:
+                            cout << "\nPC actual: "<< producto.pc;
+                            cout << "\nPC nuevo: "; cin >> pc; validarInput();
+                            if(pc <= 0) {cout << "\n\n*** PC incorrecto. Intenta de nuevo. ***\n\n"; break;}
+                            if(pc>producto.pv) {cout << "\n\n*** El PC no puede ser mayor al PV. Intenta de nuevo. ***\n\n"; break;}
+                            productos[producto.id - 1].pc = pc; // actualizamos el producto original con el ID.
+                            producto = buscarProducto(nombreProducto); // actualizamos nuestro producto temporal.
+                            cout << "\n\nPrecio de compra actualizado\n\n";
+                            break;
+                        case 2:
+                            cout << "\nPV actual: "<< producto.pv;
+                            cout << "\nPV nuevo: "; cin >> pv; validarInput();
+                            if(pv <= 0) {cout << "\n\n*** PC incorrecto. Intenta de nuevo. ***\n\n"; break;}
+                            if(pv<producto.pc) {cout << "\n\n*** El PV no puede ser menor al PC. Intenta de nuevo. ***\n\n"; break;}
+                            productos[producto.id - 1].pv = pv; // actualizamos el producto original con el ID.
+                            producto = buscarProducto(nombreProducto); // actualizamos nuestro producto temporal.
+                            cout << "\n\nPrecio de venta actualizado\n\n";
+                            break;
+                        case 3:
+                            cout << "\nExistencias actuales: "<< producto.existencias;
+                            cout << "\nExistencias nuevas: "; cin >> existencia; validarInput();
+                            if(existencia <= 0) {cout << "\n\n*** Existencia incorrecto. Intenta de nuevo. ***\n\n"; break;}
+                            if(existencia<producto.nivelReorden) {cout << "\n\n*** La existencia no puede ser menor al Nivel de reorden. Intenta de nuevo. ***\n\n"; break;}
+                            productos[producto.id - 1].existencias = existencia; // actualizamos el producto original con el ID.
+                            producto = buscarProducto(nombreProducto); // actualizamos nuestro producto temporal.
+                            cout << "\n\nExistencia actualizada\n\n";
+                            break;
+                        case 4:
+                            cout << "\nNivel de reorden actual: "<< producto.nivelReorden;
+                            cout << "\nNivel de reorden nuevo: "; cin >> nivelReorden; validarInput();
+                            if(nivelReorden <= 0) {cout << "\n\n*** Nivel de reorden incorrecto. Intenta de nuevo. ***\n\n"; break;}
+                            productos[producto.id - 1].nivelReorden = nivelReorden; // actualizamos el producto original con el ID.
+                            producto = buscarProducto(nombreProducto); // actualizamos nuestro producto temporal.
+                            cout << "\n\nNivel de reorden actualizado\n\n";
+                            break;
+                        case 5:
+                            limpiarConsola();
+                            mostrarOpciones = false;
+                            break;
+                        default:
+                            cout << "*** Opcion incorrecta. Intenta de nuevo. ***";
+                            break;
+                    }
+                }
+        } else { limpiarConsola(); cout << "\n\n*** No se encontro el producto \"" << nombreProducto << "\" ***\n\n"; }
     }
 }
