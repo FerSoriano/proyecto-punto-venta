@@ -209,29 +209,24 @@ void mostrarInventario(){
         cout << "1. Por Id\n2. Por producto\n3. Regresar al menú anterior.\n\n";
         cout << "\tOpcion: "; cin >> option;
         validarInput();
-        if (option >= 1 && option <= 3){
-            switch (option)
-            {
-            case 1:
-                limpiarConsola();
-                mostrarProductos(1);
-                break;
-            case 2:
-                limpiarConsola();
-                mostrarProductos(2);
-                break;
-            case 3:
-                limpiarConsola();
-                ejecutarMenu = false;
-                break;
-            default:
-                limpiarConsola();
-                cout << "\n*** Opcion invalida. Intenta de nuevo. ***";
-                break;
-            }
-        } else {
+        switch (option)
+        {
+        case 1:
+            limpiarConsola();
+            mostrarProductos(1);
+            break;
+        case 2:
+            limpiarConsola();
+            mostrarProductos(2);
+            break;
+        case 3:
+            limpiarConsola();
+            ejecutarMenu = false;
+            break;
+        default:
             limpiarConsola();
             cout << "\n*** Opcion invalida. Intenta de nuevo. ***";
+            break;
         }
     }
 }
