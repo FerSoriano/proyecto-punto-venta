@@ -7,13 +7,13 @@
 6	Consultas (validación productos inexistentes). Debe mostrar todos los campos del registro.* 					
 7	Modificaciones (validación productos inexistentes)*					
 12	Modificaciones solo de productos existentes  (los dados de baja no se deben poder modificar)					
+8	Bajas (validación productos inexistentes) Daré de baja un producto al menos *					
+9	Mostrar solo productos existentes (los dados de baja no los debe mostrar)					
 
 ** WIP **
 
 
 ** ON HOLD **
-8	Bajas (validación productos inexistentes) Daré de baja un producto al menos *					
-9	Mostrar solo productos existentes (los dados de baja no los debe mostrar)					
 10	Alta de productos ya eliminados (solo cambiar el estatus a 1)					
 11	Consulta de productos existentes  (los dados de baja no se deben poder consultar)					
 13	Administración de usuarios (Menu: Altas, Bajas, Modificaciones, Consultas, Mostrar)					
