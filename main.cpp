@@ -4,33 +4,6 @@
 #include <algorithm> // uso de sort()
 
 using namespace std;
-
-// Prototipos funciones
-int menuPrincipal();
-void menuAdmin();
-bool validarLogin(int tipoUsuario);
-void validarInput();
-void mostrarInventario();
-void mostrarProductos(int tipoOrden);
-void altaProducto();
-bool buscarProducto(string producto);
-string convertirMinus(string str);
-void consultarProducto();
-
-// #TODO : Crear funciones:
-int mostrarMenuAdminCuentasUsuario();
-void agregarUsuarios();
-void eliminarUsuarios();
-
-// Funciones definidad antes de Main()
-void limpiarConsola(){
-    #ifdef _WIN32
-        system("cls"); // Windows
-    #else
-        system("clear"); // macOS/Linux
-    #endif
-};
-
 // definimos el Struct para almacenar los usuarios y productos
 struct Usuario{
     string usuario;
@@ -47,6 +20,32 @@ struct Producto{
     int existencias;
     int nivelReorden;
     int status;
+};
+
+// Prototipos funciones
+int menuPrincipal();
+void menuAdmin();
+bool validarLogin(int tipoUsuario);
+void validarInput();
+void mostrarInventario();
+void mostrarProductos(int tipoOrden);
+void altaProducto();
+Producto buscarProducto(string nombreProducto);
+string convertirMinus(string str);
+void consultarProducto();
+
+// #TODO : Crear funciones:
+int mostrarMenuAdminCuentasUsuario();
+void agregarUsuarios();
+void eliminarUsuarios();
+
+// Funciones definidad antes de Main()
+void limpiarConsola(){
+    #ifdef _WIN32
+        system("cls"); // Windows
+    #else
+        system("clear"); // macOS/Linux
+    #endif
 };
 
 // variables globales
@@ -270,15 +269,18 @@ void mostrarProductos(int tipoOrden){
 }
 
 void altaProducto(){
-    string producto;
+    Producto producto;
+    string nombreProducto;
     float pc, pv;
     int existencia, nivelReorden;
 
     cout << "\n\n\tALTA DE PRODUCTO\n\n";
     while(true){
-        cout << "Producto: "; cin >> producto;
-        if (producto == "*"){limpiarConsola(); break;}
-        if(buscarProducto(producto)){cout << "\n\n*** El producto ya existe. Intenta de nuevo. ***\n\n"; continue;}
+        cout << "Producto: "; cin >> nombreProducto;
+        if (nombreProducto == "*"){limpiarConsola(); break;}
+
+        producto = buscarProducto(nombreProducto);
+        if(producto.status == 1){cout << "\n\n*** El producto \"" << nombreProducto << "\"  ya existe. Intenta de nuevo. ***\n\n"; continue;} // validacion estatus.
         
         cout << "Precio compra: "; cin >> pc; validarInput();
         cout << "Precio venta: "; cin >> pv; validarInput();
@@ -289,8 +291,8 @@ void altaProducto(){
         if(existencia<nivelReorden){cout << "\n\n*** La Existencia no puede ser menor que el Nivel de Reorden. Intenta de nuevo ***\n\n"; continue;}
 
         // se agrega el producto.
-        productos[totalProductos].id = totalProductos + 1;
-        productos[totalProductos].producto = producto;
+        productos[totalProductos].id = totalProductos + 1; //TODO: si producto.id > 0 ? id : totalProductos + 1;
+        productos[totalProductos].producto = nombreProducto; //TODO: si producto.id > 0 ? producto.producto : nombreProductol;
         productos[totalProductos].pc = pc;
         productos[totalProductos].pv = pv;
         productos[totalProductos].existencias = existencia;
@@ -298,18 +300,18 @@ void altaProducto(){
         productos[totalProductos].status = 1;
 
         totalProductos++; // se incrementa en 1 la cantidad de productos.
-        cout << "\n\nEl producto "<<producto<<" se agrego correctamente.\n";
-        cout << "Ingresa otro producto: \n\n";
+        cout << "\n\nEl producto \"" << nombreProducto << "\" se agrego correctamente.\n\n";
+
     }
 
 }
 
-bool buscarProducto(string producto){
-    bool existe = false;
-    for (int i = 0; i < totalProductos; i++){
-        if(convertirMinus(productos[i].producto) == convertirMinus(producto)) existe = true; break;
+Producto buscarProducto(string nombreProducto){
+    Producto producto = {0, "", 0.0, 0.0, 0, 0, 0};
+    for(int i = 0; i < totalProductos; i++){
+        if(convertirMinus(productos[i].producto) == convertirMinus(nombreProducto)) { producto = productos[i]; break; }
     }
-    return existe;
+    return producto;
 }
 
 string convertirMinus(string str){
@@ -318,32 +320,29 @@ string convertirMinus(string str){
 }
 
 void consultarProducto(){
-    string producto;
-    bool ejecutar = true;
-    while (ejecutar){
-        bool productoEncontrado = false;
-        cout << "\n\n\tCONSULTA\n\nProducto: "; cin >> producto;
-        if (producto == "*"){limpiarConsola(); break;}
-        for(int i = 0; i < totalProductos; i++){
-            if (convertirMinus(producto) == convertirMinus(productos[i].producto) && productos[i].status == 1){
-                cout << "\n" << left << setw(5) << "Id"
-                        << setw(15) << "Producto"
-                        << setw(10) << "PC"
-                        << setw(10) << "PV"
-                        << setw(15) << "Existencias"
-                        << setw(20) << "Nivel de Reorden"
-                        << "St" << endl;
-                cout << left << setw(5) << productos[i].id
-                        << setw(15) << productos[i].producto
-                        << setw(10) << productos[i].pc
-                        << setw(10) << productos[i].pv
-                        << setw(15) << productos[i].existencias
-                        << setw(20) << productos[i].nivelReorden
-                        << productos[i].status << endl;
-                productoEncontrado = true;
-                break;
-            }
+    Producto producto;
+    string nombreProducto;
+    while (true){
+        cout << "\n\n\tCONSULTA\n\nProducto: "; cin >> nombreProducto;
+        if (nombreProducto == "*"){limpiarConsola(); break;}
+        producto = buscarProducto(nombreProducto);
+        if(producto.status == 1){
+            cout << "\n" << left << setw(5) << "Id"
+                    << setw(15) << "Producto"
+                    << setw(10) << "PC"
+                    << setw(10) << "PV"
+                    << setw(15) << "Existencias"
+                    << setw(20) << "Nivel de Reorden"
+                    << "St" << endl;
+            cout << left << setw(5) << producto.id
+                    << setw(15) << producto.producto
+                    << setw(10) << producto.pc
+                    << setw(10) << producto.pv
+                    << setw(15) << producto.existencias
+                    << setw(20) << producto.nivelReorden
+                    << producto.status << endl;
+            continue;
         }
-        if(!productoEncontrado) cout << "\n\n*** No se encontro el producto \"" << producto << "\" ***\n\n";
+        cout << "\n\n*** No se encontro el producto \"" << nombreProducto << "\" ***\n\n";
     }
 }
