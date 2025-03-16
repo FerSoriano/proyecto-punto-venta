@@ -5,17 +5,17 @@
 4	Indicación de productos con nivel de reorden  (al momento de mostrar inventario)					
 5	Alta de productos (no alta de productos duplicados por nombre,  pc<pv, existencias > nr)*					
 6	Consultas (validación productos inexistentes). Debe mostrar todos los campos del registro.* 					
+7	Modificaciones (validación productos inexistentes)*					
+12	Modificaciones solo de productos existentes  (los dados de baja no se deben poder modificar)					
 
 ** WIP **
 
 
 ** ON HOLD **
-7	Modificaciones (validación productos inexistentes)*					
 8	Bajas (validación productos inexistentes) Daré de baja un producto al menos *					
 9	Mostrar solo productos existentes (los dados de baja no los debe mostrar)					
 10	Alta de productos ya eliminados (solo cambiar el estatus a 1)					
 11	Consulta de productos existentes  (los dados de baja no se deben poder consultar)					
-12	Modificaciones solo de productos existentes  (los dados de baja no se deben poder modificar)					
 13	Administración de usuarios (Menu: Altas, Bajas, Modificaciones, Consultas, Mostrar)					
 14	Bajas de productos existentes (los dados de baja no se deben poder dar de baja)					
 15	Acceso a ventas con autenticación (vendedor 1): usuario y contraseña					
