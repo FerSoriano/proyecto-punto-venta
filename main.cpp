@@ -283,17 +283,17 @@ void altaProducto(){
 
         producto = buscarProducto(nombreProducto);
         if(producto.status == 1){cout << "\n\n*** El producto \"" << nombreProducto << "\"  ya existe. Intenta de nuevo. ***\n\n"; continue;} // validacion estatus.
-        
-        cout << "Precio compra: "; cin >> pc; validarInput();
-        cout << "Precio venta: "; cin >> pv; validarInput();
-        if(pc>pv) {cout << "\n\n*** El PC no puede ser mayor al PV. Intenta de nuevo. ***\n\n"; continue;}
 
-        cout << "Existencia: "; cin >> existencia; validarInput();
-        cout << "Nivel de Reorden: "; cin >> nivelReorden; validarInput();
-        if(existencia<nivelReorden){cout << "\n\n*** La Existencia no puede ser menor que el Nivel de Reorden. Intenta de nuevo ***\n\n"; continue;}
+        if(producto.id == 0){    
+            cout << "Precio compra: "; cin >> pc; validarInput();
+            cout << "Precio venta: "; cin >> pv; validarInput();
+            if(pc>pv) {cout << "\n\n*** El PC no puede ser mayor al PV. Intenta de nuevo. ***\n\n"; continue;}
 
-        // se agrega el producto.
-        if( producto.id == 0){
+            cout << "Existencia: "; cin >> existencia; validarInput();
+            cout << "Nivel de Reorden: "; cin >> nivelReorden; validarInput();
+            if(existencia<nivelReorden){cout << "\n\n*** La Existencia no puede ser menor que el Nivel de Reorden. Intenta de nuevo ***\n\n"; continue;}
+
+            // se agrega el producto.
             productos[totalProductos].id = totalProductos + 1;
             productos[totalProductos].producto = nombreProducto;
             productos[totalProductos].pc = pc;
@@ -302,21 +302,13 @@ void altaProducto(){
             productos[totalProductos].nivelReorden = nivelReorden;
             productos[totalProductos].status = 1;
             totalProductos++; // se incrementa en 1 la cantidad de productos.
+            cout << "\n\nEl producto \"" << nombreProducto << "\" se agrego correctamente.\n\n";
         } else { 
-            // TODO: Si solo se debe cambiar el status, no es necesario el sig codigo. Se agregaria despues de verificar si el producto existe.
-            // si ya existia se modifica el registro original
             sort(productos,productos + totalProductos,compararPorId); // ordenamos la lista para poderla modificar.
-            productos[producto.id - 1].pc = pc;
-            productos[producto.id - 1].pv = pv;
-            productos[producto.id - 1].existencias = existencia;
-            productos[producto.id - 1].nivelReorden = nivelReorden;
             productos[producto.id - 1].status = 1;
+            cout << "El producto " << producto.producto << " se dio de alta." << endl;
         }
-
-        cout << "\n\nEl producto \"" << nombreProducto << "\" se agrego correctamente.\n\n";
-
     }
-
 }
 
 Producto buscarProducto(string nombreProducto){
