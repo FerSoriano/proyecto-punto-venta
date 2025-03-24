@@ -31,15 +31,13 @@ void mostrarInventario();
 void mostrarProductos(int tipoOrden);
 void altaProducto();
 Producto buscarProducto(string nombreProducto);
+Usuario buscarUsuario(string nombreUsuario);
 string convertirMinus(string str);
 void consultarProducto();
 void modificarProducto();
 void bajaProducto();
-
-// #TODO : Crear funciones:
-int mostrarMenuAdminCuentasUsuario();
-void agregarUsuarios();
-void eliminarUsuarios();
+void mostrarMenuAdminCuentasUsuario();
+void altaUsuario();
 
 // Funciones definidad antes de Main()
 void limpiarConsola(){
@@ -125,9 +123,7 @@ void menuAdmin(){
             cout << "\tOpcion: ";
             cin >> option;
             validarInput();
-            if (option >= 1 && option <= 8){
-                switch (option)
-                {
+            switch (option){
                 case 1:
                     limpiarConsola();
                     altaProducto();
@@ -150,7 +146,7 @@ void menuAdmin(){
                     break;
                 case 6:
                     limpiarConsola();
-                    cout << "Insertar codigo: Admin Cuentas Usuario"<<endl;
+                    mostrarMenuAdminCuentasUsuario();
                     break;
                 case 7:
                     limpiarConsola();
@@ -164,10 +160,6 @@ void menuAdmin(){
                     limpiarConsola();
                     cout << "\n*** Opcion invalida. Intenta de nuevo. ***";
                     break;
-                }
-            } else {
-                limpiarConsola();
-                cout << "\n*** Opcion invalida. Intenta de nuevo. ***";
             }
         }
     }
@@ -319,6 +311,14 @@ Producto buscarProducto(string nombreProducto){
     return producto;
 }
 
+Usuario buscarUsuario(string nombreUsuario){
+    Usuario usuario = {"", "", 0, 0};
+    for(int i = 0; i < totalUsuarios; i++){
+        if(convertirMinus(usuarios[i].usuario) == convertirMinus(nombreUsuario)) { usuario = usuarios[i]; break; }
+    }
+    return usuario;
+}
+
 string convertirMinus(string str){
     for (char &c : str) c = tolower(c);
     return str;
@@ -428,5 +428,76 @@ void bajaProducto(){
 
         productos[producto.id - 1].status = 0;
         cout << "El producto \"" << producto.producto << "\" se dio de baja\n";
+    }
+}
+
+void mostrarMenuAdminCuentasUsuario(){
+    int option;
+    bool ejecutarMenu = true;
+    
+    while(ejecutarMenu){
+        cout << "\n\n\tMENU ADMINISTRACION DE CUENTAS DE USUARIOS\n\n";
+        cout << "1. Altas\n2. Bajas\n3. Consultas\n4. Modificaciones\n5. Mostrar cuentas de usuarios\n6. Regresar al menu anterior.\n\n";
+        cout << "\tOpcion: ";
+        cin >> option;
+        validarInput();
+        switch (option){
+            case 1:
+                limpiarConsola();
+                altaUsuario();
+                break;
+            case 2:
+                limpiarConsola();
+                // TODO: bajaProducto();
+                break;
+            case 3:
+                limpiarConsola();
+                // TODO: consultarProducto();
+                break;
+            case 4:
+                limpiarConsola();
+                // TODO: modificarProducto();
+                break;
+            case 5:
+                limpiarConsola();
+                // TODO: mostrarInventario();
+                break;
+            case 6:
+                limpiarConsola();
+                ejecutarMenu = false;
+                break;
+            default:
+                limpiarConsola();
+                cout << "\n*** Opcion invalida. Intenta de nuevo. ***";
+                break;
+        }
+    }
+}
+
+void altaUsuario(){
+    Usuario usuario;
+    string nombreUsuario;
+    string pass;
+    int tipo;
+
+    cout << "\n\n\tALTA USUARIO\n\n";
+    while(true){
+        cout << "Usuario: "; cin >> nombreUsuario;
+        if (nombreUsuario == "*"){limpiarConsola(); break;}
+
+        usuario = buscarUsuario(nombreUsuario);
+        if(usuario.status == 1){cout << "\n\n*** El usuario \"" << nombreUsuario << "\"  ya existe. Intenta de nuevo. ***\n\n"; continue;} // validacion estatus.
+
+        cout << "Contraseña: "; cin >> pass;
+        cout << "Tipo (1 admin / 2 vendedor): "; cin >> tipo; validarInput();
+
+        // se agrega el producto.
+        usuarios[totalUsuarios].usuario = nombreUsuario;
+        usuarios[totalUsuarios].pass = pass;
+        usuarios[totalUsuarios].tipo = tipo;
+        usuarios[totalUsuarios].status = 1;
+        totalUsuarios++; // se incrementa en 1 la cantidad de usuarios.
+
+        cout << "\n\nEl Usuario \"" << nombreUsuario << "\" se agrego correctamente.\n\n";
     }
 }
