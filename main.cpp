@@ -39,6 +39,7 @@ void bajaProducto();
 void mostrarMenuAdminCuentasUsuario();
 void altaUsuario();
 void bajaUsuario();
+void modificarUsuario();
 
 // Funciones definidad antes de Main()
 void limpiarConsola(){
@@ -172,11 +173,12 @@ bool validarLogin(int tipoUsuario){
     do{
         cout << "\nUsuario: ";
         cin >> usuario;
+        if(usuario == "*"){limpiarConsola(); break;}
         cout << "\nPassword: ";
         cin >> pass;
 
         for (int i = 0; i < totalUsuarios; i++){
-            if (usuarios[i].usuario == usuario && usuarios[i].pass == pass && usuarios[i].tipo == tipoUsuario){
+            if (usuarios[i].usuario == usuario && usuarios[i].pass == pass && usuarios[i].tipo == tipoUsuario && usuarios[i].status == 1){
                 isValid = true;
                 break;
             }
@@ -457,7 +459,7 @@ void mostrarMenuAdminCuentasUsuario(){
                 break;
             case 4:
                 limpiarConsola();
-                // TODO: modificarProducto();
+                modificarUsuario();
                 break;
             case 5:
                 limpiarConsola();
@@ -521,6 +523,50 @@ void bajaUsuario(){
             }
         }
 
+        if(!usuarioEncontrado){cout << "\n\n***Usuario \"" << nombreUsuario << "\" no encontrado. Intenta de nuevo. ***\n\n";}
+    }
+}
+
+void modificarUsuario(){
+    string nombreUsuario, pass;
+    int opcion, tipo;
+
+    while (true){
+        bool usuarioEncontrado = false;
+        bool mostrarOpciones = true;
+        cout << "\n\n\tMODIFICACIONES\n\nUsuario: "; cin >> nombreUsuario;
+        if (nombreUsuario == "*"){limpiarConsola(); break;}
+        for(int i = 0; i<totalUsuarios; i++){
+            if(convertirMinus(usuarios[i].usuario) == convertirMinus(nombreUsuario) && usuarios[i].status == 1) {
+                while (mostrarOpciones){
+                    cout << "\n\n\tMODIFICACIONES\n\nUsuario: "<< nombreUsuario << endl;
+                    cout << "\n1. Contraseña\n2. Tipo\n3. Regresar al menu anterior\n\n";
+                    cout << "\tOpcion: "; cin >> opcion; validarInput();
+                    switch(opcion){
+                        case 1:
+                            cout << "\nContraseña actual: "<< usuarios[i].pass;
+                            cout << "\nContraseña nueva: "; cin >> pass;
+                            usuarios[i].pass = pass; // actualizamos el password
+                            cout << "\n\nContraseña actualizada\n\n";
+                            break;
+                        case 2:
+                            cout << "\nTipo actual: "<< usuarios[i].tipo;
+                            cout << "\nTipo nuevo: "; cin >> tipo; validarInput();
+                            usuarios[i].tipo = tipo; // actualizamos el tipo
+                            cout << "\n\nTipo actualizado\n\n";
+                            break;
+                        case 3:
+                            limpiarConsola();
+                            mostrarOpciones = false;
+                            break;
+                        default:
+                            cout << "*** Opcion incorrecta. Intenta de nuevo. ***";
+                            break;
+                    }
+                }
+                usuarioEncontrado = true;
+            }
+        }
         if(!usuarioEncontrado){cout << "\n\n***Usuario \"" << nombreUsuario << "\" no encontrado. Intenta de nuevo. ***\n\n";}
     }
 }
