@@ -72,7 +72,6 @@ Producto productos[100] = {
 int main(){
     bool isExcecute = true;
     int optionMenu;
-    cout << "Bienvenido, pulsa cualquier tecla para comenzar...";
     while (isExcecute){
         optionMenu = menuPrincipal();
         switch (optionMenu){
@@ -88,7 +87,10 @@ int main(){
             case 3:
                 cout << "\n-------------------------------------------------\n     SALIENDO DEL SISTEMA. FIN DEL PROGRAMA.\n-------------------------------------------------\n\n";
                 isExcecute = false;
+                break;
             default:
+                limpiarConsola();
+                cout << "\n*** Opcion invalida. Intenta de nuevo. ***";
                 break;
         }
     }
@@ -97,24 +99,13 @@ int main(){
 
 int menuPrincipal(){
     int option;
-    while (true){
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-        cout << "\n\n\tMENU PRINCIPAL\n\n";
-        cout << "1. Administrador\n2. Ventas\n3. Salir\n\n";
-        cout << "\tOpcion: "; cin >> option;
-        validarInput();
-        if (option >= 1 && option <= 3) break;
-        else {
-            limpiarConsola();
-            cout << "\n*** Opcion invalida. Intenta de nuevo. ***";
-        }
-    }
+    cout << "\n\n\tMENU PRINCIPAL\n\n";
+    cout << "1. Administrador\n2. Ventas\n3. Salir\n\n";
+    cout << "\tOpcion: "; cin >> option;
+    validarInput();
     return option;
 }
 
-// #TODO: Terminar de implementar funcion. Agregar Switch y funciones para cada opcion.
 void menuAdmin(){
     if (validarLogin(1)){
         limpiarConsola();
@@ -154,6 +145,7 @@ void menuAdmin(){
                     break;
                 case 7:
                     limpiarConsola();
+                    // TODO: crear corteCajaGeneral();
                     cout << "Insertar codigo: Corte de Caja General"<<endl;
                     break;
                 case 8:
