@@ -38,6 +38,7 @@ void modificarProducto();
 void bajaProducto();
 void mostrarMenuAdminCuentasUsuario();
 void altaUsuario();
+void bajaUsuario();
 
 // Funciones definidad antes de Main()
 void limpiarConsola(){
@@ -448,7 +449,7 @@ void mostrarMenuAdminCuentasUsuario(){
                 break;
             case 2:
                 limpiarConsola();
-                // TODO: bajaProducto();
+                bajaUsuario();
                 break;
             case 3:
                 limpiarConsola();
@@ -499,5 +500,27 @@ void altaUsuario(){
         totalUsuarios++; // se incrementa en 1 la cantidad de usuarios.
 
         cout << "\n\nEl Usuario \"" << nombreUsuario << "\" se agrego correctamente.\n\n";
+    }
+}
+
+void bajaUsuario(){
+    string nombreUsuario;
+    
+    while(true){
+        bool usuarioEncontrado = false;
+        cout << "\n\n\tBAJA USUARIO\n\n";
+        cout << "Usuario: "; cin >> nombreUsuario;
+        if (nombreUsuario == "*"){limpiarConsola(); break;}
+
+        for(int i = 0; i<totalUsuarios; i++){
+            if(convertirMinus(usuarios[i].usuario) == convertirMinus(nombreUsuario) && usuarios[i].status == 1) {
+                usuarios[i].status = 0; 
+                cout << "El usuario \"" << usuarios[i].usuario << "\" se dio de baja\n";
+                usuarioEncontrado = true;
+                break; 
+            }
+        }
+
+        if(!usuarioEncontrado){cout << "\n\n***Usuario \"" << nombreUsuario << "\" no encontrado. Intenta de nuevo. ***\n\n";}
     }
 }
