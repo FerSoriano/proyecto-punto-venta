@@ -8,28 +8,30 @@
 7	Modificaciones (validación productos inexistentes)*					
 12	Modificaciones solo de productos existentes  (los dados de baja no se deben poder modificar)					
 8	Bajas (validación productos inexistentes) Daré de baja un producto al menos *					
+14	Bajas de productos existentes (los dados de baja no se deben poder dar de baja)					
 9	Mostrar solo productos existentes (los dados de baja no los debe mostrar)					
 10	Alta de productos ya eliminados (solo cambiar el estatus a 1)					
 11	Consulta de productos existentes  (los dados de baja no se deben poder consultar)					
 
 ** WIP **
+13	Administración de usuarios (Menu: Altas, Bajas, Modificaciones, Consultas, Mostrar)		
 
 
 ** ON HOLD **
-13	Administración de usuarios (Menu: Altas, Bajas, Modificaciones, Consultas, Mostrar)					
-14	Bajas de productos existentes (los dados de baja no se deben poder dar de baja)					
 15	Acceso a ventas con autenticación (vendedor 1): usuario y contraseña					
 16	Venta por cliente (No se pueden vender productos dados de baja)					
 17	Actualización de inventario. El inventario se debe actualizar en automático al momento de realizar las ventas.					
 18	Validación de existencias: Si las existencias son menores a la cantidad a comprar el sistema debe validarlo y mostrar el mensaje correspondiente. Ejemplo. Si la cantidad a comprar es 6 y las existencias son 4: "No hay 6, solo hay 4, ¿realizar la venta de 4?". Hacer el descuento en el inventario si es que procede.					
 19	Importe total (ticket) por cliente					
 20	Corte de caja del vendedor					
+
 21	 Acceso a ventas con autenticación (vendedor 2)					
 22	Venta por cliente					
 23	Actualización de inventario					
 24	Validación de existencias					
 25	Importe total (ticket) por cliente					
-26	Corte de caja del vendedor					
+26	Corte de caja del vendedor	
+
 27	Actulizacion de archivos					
 28	Corte de caja general (suma general)				
 29	Utliza arreglo de estructuras (al  menos 3 funcionalidades)					
