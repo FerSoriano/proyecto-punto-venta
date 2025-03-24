@@ -40,6 +40,7 @@ void mostrarMenuAdminCuentasUsuario();
 void altaUsuario();
 void bajaUsuario();
 void modificarUsuario();
+void consultarUsuario();
 
 // Funciones definidad antes de Main()
 void limpiarConsola(){
@@ -455,7 +456,7 @@ void mostrarMenuAdminCuentasUsuario(){
                 break;
             case 3:
                 limpiarConsola();
-                // TODO: consultarProducto();
+                consultarUsuario();
                 break;
             case 4:
                 limpiarConsola();
@@ -568,5 +569,27 @@ void modificarUsuario(){
             }
         }
         if(!usuarioEncontrado){cout << "\n\n***Usuario \"" << nombreUsuario << "\" no encontrado. Intenta de nuevo. ***\n\n";}
+    }
+}
+
+void consultarUsuario(){
+    Usuario usuario;
+    string nombreUsuario;
+    while (true){
+        cout << "\n\n\tCONSULTA\n\nUsuario: "; cin >> nombreUsuario;
+        if (nombreUsuario == "*"){limpiarConsola(); break;}
+        usuario = buscarUsuario(nombreUsuario);
+        if(usuario.status == 1){
+            cout << "\n" << left << setw(15) << "Usuario"
+                    << setw(10) << "Pass"
+                    << setw(10) << "Tipo"
+                    << "St" << endl;
+            cout << left << setw(15) << usuario.usuario
+                    << setw(10) << usuario.pass
+                    << setw(10) << usuario.tipo
+                    << usuario.status << endl;
+            continue;
+        }
+        cout << "\n\n*** No se encontro el usuario \"" << nombreUsuario << "\" ***\n\n";
     }
 }
