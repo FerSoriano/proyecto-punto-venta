@@ -33,7 +33,7 @@
 26	Corte de caja del vendedor	
 
 27	Actulizacion de archivos					
-28	Corte de caja general (suma general)				
+28	Corte de caja general (suma general) - menu admin.			
 29	Utliza arreglo de estructuras (al  menos 3 funcionalidades)					
 30	Al  menos 3 funcionalidades utilizando listas de estructuras					
 31	Utilidad (diferencia entre ingresos y egresos). Mostrarlo en el corte de caja general. Opcional					

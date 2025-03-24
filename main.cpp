@@ -41,6 +41,7 @@ void altaUsuario();
 void bajaUsuario();
 void modificarUsuario();
 void consultarUsuario();
+void mostrarCuentasUsuarios();
 
 // Funciones definidad antes de Main()
 void limpiarConsola(){
@@ -464,7 +465,7 @@ void mostrarMenuAdminCuentasUsuario(){
                 break;
             case 5:
                 limpiarConsola();
-                // TODO: mostrarInventario();
+                mostrarCuentasUsuarios();
                 break;
             case 6:
                 limpiarConsola();
@@ -539,6 +540,7 @@ void modificarUsuario(){
         if (nombreUsuario == "*"){limpiarConsola(); break;}
         for(int i = 0; i<totalUsuarios; i++){
             if(convertirMinus(usuarios[i].usuario) == convertirMinus(nombreUsuario) && usuarios[i].status == 1) {
+                limpiarConsola();
                 while (mostrarOpciones){
                     cout << "\n\n\tMODIFICACIONES\n\nUsuario: "<< nombreUsuario << endl;
                     cout << "\n1. Contraseña\n2. Tipo\n3. Regresar al menu anterior\n\n";
@@ -592,4 +594,21 @@ void consultarUsuario(){
         }
         cout << "\n\n*** No se encontro el usuario \"" << nombreUsuario << "\" ***\n\n";
     }
+}
+
+void mostrarCuentasUsuarios(){
+    cout << "---------------------------------------------------------------------------\n\t\t\tMOSTRAR CUENTAS DE USUARIOS\n---------------------------------------------------------------------------\n";
+    cout << "\n" << left << setw(15) << "Usuario"
+                    << setw(10) << "Pass"
+                    << setw(10) << "Tipo"
+                    << "St" << endl;
+    for(int i = 0; i < totalUsuarios; i++){
+        if(usuarios[i].status == 1){
+            cout << left << setw(15) << usuarios[i].usuario
+                    << setw(10) << usuarios[i].pass
+                    << setw(10) << usuarios[i].tipo
+                    << usuarios[i].status << endl;
+        }
+    }
+    cout << "\n\n";
 }
