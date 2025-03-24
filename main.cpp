@@ -4,7 +4,9 @@
 #include <algorithm> // uso de sort()
 
 using namespace std;
-// definimos el Struct para almacenar los usuarios y productos
+
+// definimos el Struct para almacenar los usuarios, productos y ventas
+
 struct Usuario{
     string usuario;
     string pass;
@@ -22,7 +24,17 @@ struct Producto{
     int status;
 };
 
+struct Venta{
+    string vendedor;
+    string productos[100];
+    int cantidad[100];
+    float pc[100];
+    float pv[100];
+    int totalProductosVentas = 0;
+};
+
 // Prototipos funciones
+
 int menuPrincipal();
 void menuAdmin();
 bool validarLogin(int tipoUsuario);
@@ -42,17 +54,15 @@ void bajaUsuario();
 void modificarUsuario();
 void consultarUsuario();
 void mostrarCuentasUsuarios();
-
-// Funciones definidad antes de Main()
-void limpiarConsola(){
-    #ifdef _WIN32
-        system("cls"); // Windows
-    #else
-        system("clear"); // macOS/Linux
-    #endif
-};
+void hacerVenta();
+void imprimirTicket(Venta venta);
+void restarInventario(int id, int cantidad);
+void reiniciarVenta(Venta &venta);
+void corteCajaVendedor(string vendedor);
+void limpiarConsola();
 
 // variables globales
+
 int totalUsuarios = 3;
 Usuario usuarios[100] = {
     {"admin", "123", 1, 1}, 
@@ -69,6 +79,11 @@ Producto productos[100] = {
     {5,"Refresco",10.99,14.75,30,8,1}
 };
 
+int totalVentas = 0;
+Venta ventas[100];
+
+string currentUser;
+
 int main(){
     bool isExcecute = true;
     int optionMenu;
@@ -79,10 +94,7 @@ int main(){
                 menuAdmin();
                 break;
             case 2:
-                // #TODO: Validacion login ventas
-                // #TODO: Crear funcion Ventas()
-                limpiarConsola();
-                cout << "Mostrando menu Ventas...";
+                hacerVenta();
                 break;
             case 3:
                 cout << "\n-------------------------------------------------\n     SALIENDO DEL SISTEMA. FIN DEL PROGRAMA.\n-------------------------------------------------\n\n";
@@ -96,6 +108,14 @@ int main(){
     }
     return 0;
 }
+
+void limpiarConsola(){
+    #ifdef _WIN32
+        system("cls"); // Windows
+    #else
+        system("clear"); // macOS/Linux
+    #endif
+};
 
 int menuPrincipal(){
     int option;
@@ -173,6 +193,7 @@ bool validarLogin(int tipoUsuario){
 
         for (int i = 0; i < totalUsuarios; i++){
             if (usuarios[i].usuario == usuario && usuarios[i].pass == pass && usuarios[i].tipo == tipoUsuario && usuarios[i].status == 1){
+                currentUser = usuario;
                 isValid = true;
                 break;
             }
@@ -603,4 +624,127 @@ void mostrarCuentasUsuarios(){
         }
     }
     cout << "\n\n";
+}
+
+// TODO: terminar funcion hacerVenta()...
+void hacerVenta(){
+    if (validarLogin(2)){
+        limpiarConsola();
+        Producto producto;
+        Venta ventaActual;
+        string nombreProducto;
+        int cantidad;
+        
+        cout << "\n\n\tVENTAS: " << currentUser <<"\n\n";
+        while(true){
+            cout << "Producto: "; cin >> nombreProducto;
+
+            if(nombreProducto == "*"){ // imprimir ticket
+                limpiarConsola(); 
+                ventas[totalVentas] = ventaActual; // agregamos la venta a la lista
+                imprimirTicket(ventaActual); 
+                totalVentas++; // se incrementa en uno las ventas
+                reiniciarVenta(ventaActual); // se vuelve a inicializar vacio
+                continue;
+            }
+            if(nombreProducto == "**"){ // corte de caja vendedor
+                limpiarConsola();
+                corteCajaVendedor(currentUser);
+                break;
+            }
+
+            producto = buscarProducto(nombreProducto);
+            // validamos que el producto exista o no este dado de baja
+            if(producto.status == 0){ cout << "\n\n*** No se encontro el producto. Intenta de nuevo ***\n\n"; continue; }
+            // validamos que tengan existencias
+            if(producto.existencias <= 0){ cout << "\n\n*** El producto no tiene existencia. Intenta de nuevo ***\n\n"; continue; }
+
+            cout << "Cantidad: "; cin >> cantidad; validarInput();
+            if(cantidad <= 0){cout << "\n\n*** Cantidad invalida. Intenta de nuevo ***\n\n"; continue;}
+
+            // validamos que tengamos las existencias que solicita el cliente
+            if(producto.existencias < cantidad){
+                string resp;
+                cout << "\n\nNo hay " << cantidad << ", solo hay " << producto.existencias << ", ¿realizar la venta de " << producto.existencias << "? ('Y' para aceptar / cualquiera para omitir): ";
+                cin >> resp;
+                if( convertirMinus(resp) != "y") { cout << "\n"; continue; }
+                cantidad = producto.existencias;
+                cout << "Se agregaron " << producto.existencias << endl;
+            }
+            
+            // creamos la venta dentro de la estructura de Ventas
+            ventaActual.vendedor = currentUser; // vendedor loggeado
+            ventaActual.productos[ventaActual.totalProductosVentas] = producto.producto; // nombre del producto
+            ventaActual.cantidad[ventaActual.totalProductosVentas] = cantidad;
+            ventaActual.pc[ventaActual.totalProductosVentas] = producto.pc;
+            ventaActual.pv[ventaActual.totalProductosVentas] = producto.pv;
+            ventaActual.totalProductosVentas++;
+
+            // Restar producto al inventario
+            restarInventario(producto.id, cantidad);
+
+            cout << "\n";
+        }
+    }
+}
+
+void imprimirTicket(Venta venta){
+    float total = 0;
+    cout << "\n\n-------------------------------------------------------\n\n";
+    cout << "\t\tAbarrotes \"El Inge\"";
+    cout << "\n\t\t Ticket de Venta\n\n\n";
+    cout << "Vendedor: " << currentUser << endl;
+
+    cout << "\n" << left << setw(15) << "Producto"
+                    << setw(10) << "Cantidad"
+                    << setw(20) << "Precio Unitario"
+                    << "Subtotal" << endl;
+    for(int i = 0; i < venta.totalProductosVentas; i++){
+        float subtotal = venta.cantidad[i] * venta.pv[i];
+        total += subtotal;
+        cout << left << setw(15) << venta.productos[i]
+                << setw(10) << venta.cantidad[i]
+                << setw(20) << venta.pv[i]
+                << subtotal << endl;
+    }
+    cout << "\n\t\t\t\t     Total: $" << total << "\n\n-------------------------------------------------------\n\n";
+}
+
+void reiniciarVenta(Venta &venta) {
+    venta.vendedor = "";
+    for (int i = 0; i < venta.totalProductosVentas; i++) {
+        venta.productos[i] = "";
+        venta.cantidad[i] = 0;  
+        venta.pc[i] = 0.0;      
+        venta.pv[i] = 0.0;
+    }
+    venta.totalProductosVentas = 0;
+}
+
+void restarInventario(int id, int cantidad){
+    for(int i=0; i<totalProductos; i++){
+        if(productos[i].id == id){
+            productos[i].existencias -= cantidad;
+            break;
+        }
+    }
+}
+
+void corteCajaVendedor(string vendedor){
+    float ingresos = 0, egresos = 0;
+    
+    cout << "\n\n-------------------------------------------------------\n\n";
+    cout << "\t\tCorte de Caja: " << vendedor << "\n\n";
+    for(int i=0; i < totalVentas; i++){
+        if(ventas[i].vendedor == vendedor){
+            for(int k=0; k < ventas[i].totalProductosVentas; k++){
+                ingresos += (ventas[i].pv[k] * ventas[i].cantidad[k]);
+                egresos  += (ventas[i].pc[k] * ventas[i].cantidad[k]);
+            }
+        }
+    }
+    cout << "Ingresos: $" << ingresos << endl;
+    cout << "Egresos:  $" << egresos << endl;
+    cout << "\nUtilidad: $" << ingresos - egresos << endl;
+    cout << "\n-------------------------------------------------------\n\n";
 }
