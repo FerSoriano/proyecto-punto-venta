@@ -33,6 +33,7 @@ struct Venta{
     int totalProductosVentas = 0;
 };
 
+
 // Prototipos funciones
 
 int menuPrincipal();
@@ -59,6 +60,7 @@ void imprimirTicket(Venta venta);
 void restarInventario(int id, int cantidad);
 void reiniciarVenta(Venta &venta);
 void corteCajaVendedor(string vendedor);
+void corteCajaGeneral();
 void limpiarConsola();
 
 // variables globales
@@ -165,8 +167,7 @@ void menuAdmin(){
                     break;
                 case 7:
                     limpiarConsola();
-                    // TODO: crear corteCajaGeneral();
-                    cout << "Insertar codigo: Corte de Caja General"<<endl;
+                    corteCajaGeneral();
                     break;
                 case 8:
                     limpiarConsola();
@@ -626,7 +627,6 @@ void mostrarCuentasUsuarios(){
     cout << "\n\n";
 }
 
-// TODO: terminar funcion hacerVenta()...
 void hacerVenta(){
     if (validarLogin(2)){
         limpiarConsola();
@@ -701,6 +701,7 @@ void imprimirTicket(Venta venta){
                     << "Subtotal" << endl;
     for(int i = 0; i < venta.totalProductosVentas; i++){
         float subtotal = venta.cantidad[i] * venta.pv[i];
+        //string precio = "$" + to_string(venta.productos[i]);
         total += subtotal;
         cout << left << setw(15) << venta.productos[i]
                 << setw(10) << venta.cantidad[i]
@@ -741,6 +742,22 @@ void corteCajaVendedor(string vendedor){
                 ingresos += (ventas[i].pv[k] * ventas[i].cantidad[k]);
                 egresos  += (ventas[i].pc[k] * ventas[i].cantidad[k]);
             }
+        }
+    }
+    cout << "Ingresos: $" << ingresos << endl;
+    cout << "Egresos:  $" << egresos << endl;
+    cout << "\nUtilidad: $" << ingresos - egresos << endl;
+    cout << "\n-------------------------------------------------------\n\n";
+}
+
+void corteCajaGeneral(){
+    float ingresos = 0, egresos = 0;
+    cout << "\n\n-------------------------------------------------------\n\n";
+    cout << "\t\tCorte general\n\n";
+    for(int i=0; i<totalVentas; i++){
+        for(int j=0; j < ventas[i].totalProductosVentas; j++){
+            ingresos += (ventas[i].pv[j] * ventas[i].cantidad[j]);
+            egresos  += (ventas[i].pc[j] * ventas[i].cantidad[j]);
         }
     }
     cout << "Ingresos: $" << ingresos << endl;

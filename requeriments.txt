@@ -27,10 +27,10 @@
 24	Validación de existencias					
 25	Importe total (ticket) por cliente					
 26	Corte de caja del vendedor	
-
-** WIP **
 28	Corte de caja general (suma general) - menu admin.			
 31	Utilidad (diferencia entre ingresos y egresos). Mostrarlo en el corte de caja general. Opcional					
+
+** WIP **
 
 ** ON HOLD **
 
